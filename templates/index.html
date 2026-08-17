@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>PDF Analyzer AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+</head>
+
+
+<body>
+
+
+<!-- NAVBAR -->
+
+<nav class="navbar">
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            📄
+        </div>
+
+        <span>
+            PDF<span class="highlight">Analyzer</span>
+        </span>
+
+    </div>
+
+
+    <div class="nav-badge">
+        🤖 AI Powered
+    </div>
+
+</nav>
+
+
+
+<main class="main-container">
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+    <div class="hero-badge">
+        ✨ Intelligent Document Analysis
+    </div>
+
+
+    <h1>
+        Understand Your PDFs
+        <span>Instantly.</span>
+    </h1>
+
+
+    <p>
+        Upload your PDF and let our intelligent analyzer
+        extract, analyze and organize important information
+        from your document.
+    </p>
+
+</section>
+
+
+
+<!-- UPLOAD -->
+
+<section class="upload-card">
+
+
+    <div class="upload-icon">
+        📄
+    </div>
+
+
+    <h2>
+        Upload Your PDF
+    </h2>
+
+
+    <p class="upload-description">
+        Upload a document and let PDF Analyzer
+        understand its content.
+    </p>
+
+
+
+    <form action="/analyze"
+          method="POST"
+          enctype="multipart/form-data">
+
+
+        <label for="pdf"
+               class="drop-zone">
+
+
+            <div class="drop-icon">
+                ☁️
+            </div>
+
+
+            <span class="drop-title">
+                Click to upload your PDF
+            </span>
+
+
+            <span class="drop-subtitle">
+                PDF files only • Maximum file size recommended: 10 MB
+            </span>
+
+
+            <span class="file-name"
+                  id="file-name">
+                No file selected
+            </span>
+
+
+        </label>
+
+
+        <input
+            type="file"
+            id="pdf"
+            name="pdf"
+            accept=".pdf"
+            required
+            hidden
+        >
+
+
+        <button type="submit"
+                class="analyze-button">
+
+            🔍 Analyze PDF
+
+        </button>
+
+
+    </form>
+
+
+    <p class="supported">
+        🔒 Your document is processed securely
+    </p>
+
+
+</section>
+
+
+
+{% if filename %}
+
+
+<!-- RESULTS -->
+
+<section class="results-section">
+
+
+    <div class="results-header">
+
+
+        <div>
+
+            <span class="section-label">
+                ANALYSIS COMPLETE
+            </span>
+
+            <h2>
+                📊 PDF Analysis Results
+            </h2>
+
+        </div>
+
+
+        <div class="file-name-badge">
+            📄 {{ filename }}
+        </div>
+
+
+    </div>
+
+
+
+    <!-- STATISTICS -->
+
+    <div class="stats-grid">
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                📑
+            </div>
+
+            <div>
+
+                <span class="stat-label">
+                    Pages
+                </span>
+
+                <strong>
+                    {{ pages }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                📝
+            </div>
+
+            <div>
+
+                <span class="stat-label">
+                    Words
+                </span>
+
+                <strong>
+                    {{ words }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🔤
+            </div>
+
+            <div>
+
+                <span class="stat-label">
+                    Characters
+                </span>
+
+                <strong>
+                    {{ characters }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- COMMON WORDS -->
+
+    <div class="analysis-card">
+
+
+        <div class="card-heading">
+
+            <div class="heading-icon">
+                🔑
+            </div>
+
+            <div>
+
+                <h3>
+                    Most Common Words
+                </h3>
+
+                <p>
+                    Frequently occurring terms in your document
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="keywords">
+
+            {% for word, count in common_words %}
+
+                <div class="keyword">
+
+                    {{ word }}
+
+                    <strong>
+                        {{ count }}
+                    </strong>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- EXTRACTED TEXT -->
+
+    <div class="analysis-card">
+
+
+        <div class="card-heading">
+
+            <div class="heading-icon">
+                📖
+            </div>
+
+            <div>
+
+                <h3>
+                    Extracted Text
+                </h3>
+
+                <p>
+                    Text extracted from your PDF
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="text-box">
+
+            {{ text }}
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+{% endif %}
+
+
+
+<!-- FEATURES -->
+
+<section class="features">
+
+
+    <div class="feature">
+
+        <div class="feature-icon">
+            ⚡
+        </div>
+
+        <h3>
+            Fast Analysis
+        </h3>
+
+        <p>
+            Extract information from your PDF quickly.
+        </p>
+
+    </div>
+
+
+
+    <div class="feature">
+
+        <div class="feature-icon">
+            🧠
+        </div>
+
+        <h3>
+            Intelligent Analysis
+        </h3>
+
+        <p>
+            Identify important information and keywords.
+        </p>
+
+    </div>
+
+
+
+    <div class="feature">
+
+        <div class="feature-icon">
+            📊
+        </div>
+
+        <h3>
+            Clear Insights
+        </h3>
+
+        <p>
+            Understand your document through useful statistics.
+        </p>
+
+    </div>
+
+
+</section>
+
+
+</main>
+
+
+
+<footer>
+
+    © 2026 PDF Analyzer AI • Built with Python & Flask
+
+</footer>
+
+
+
+<script>
+
+const pdfInput = document.getElementById("pdf");
+
+const fileName = document.getElementById("file-name");
+
+
+pdfInput.addEventListener("change", function () {
+
+    if (this.files.length > 0) {
+
+        fileName.textContent =
+            "Selected: " + this.files[0].name;
+
+    } else {
+
+        fileName.textContent =
+            "No file selected";
+
+    }
+
+});
+
+</script>
+
+
+</body>
+
+</html>
